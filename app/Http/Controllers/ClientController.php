@@ -92,13 +92,20 @@ class ClientController extends Controller
             }
 
             $usuario = Client::find($request->id);
-            $usuario->nome = $request->nome;
-            $usuario->email =  $request->email;
-            $usuario->telefone_celular = $request->telefone_celular;
-            $usuario->data_nascimento =  $request->data_nascimento;
-            $usuario->nome_mae = $request->nome_mae;
-            $usuario->update();
-            return ('{"errMsg":"Alterado com Sucesso"}');
+
+            if ($usuario) {
+                $usuario->nome = $request->nome;
+                $usuario->email =  $request->email;
+                $usuario->telefone_celular = $request->telefone_celular;
+                $usuario->data_nascimento =  $request->data_nascimento;
+                $usuario->nome_mae = $request->nome_mae;
+                $usuario->update();
+                return ('{"errMsg":"Alterado com Sucesso"}');
+            } else {
+                throw new Exception('{"errMsg":"Cliente inexistente!"}');
+            }
+       
+          
             //code...
         } catch (Exception $e) {
 
@@ -117,7 +124,7 @@ class ClientController extends Controller
                 $usuario->delete();
                 return ('{"errMsg":"Excluído com Sucesso"}');
             } else {
-                throw new Exception('{"errMsg":"Erro ao excluir o Usuário"}');
+                throw new Exception('{"errMsg":"Erro ao excluir o Cliente"}');
             }
         } catch (Exception $e) {
             return ($e->getMessage());
@@ -135,7 +142,7 @@ class ClientController extends Controller
             $lista_usuarios = Client::all();
             if ((sizeof($lista_usuarios) == 0)) {
 
-                throw new Exception('{"errMsg":"Não existem usuários cadastrados!"}');
+                throw new Exception('{"errMsg":"Não existem clientes cadastrados!"}');
             } else {
 
                 return $lista_usuarios;
@@ -159,7 +166,7 @@ class ClientController extends Controller
 
 
 
-                throw new Exception('{"errMsg":"Usuário Inexistente!"}');
+                throw new Exception('{"errMsg":"Cliente Inexistente!"}');
             } else {
 
                 return $cliente;

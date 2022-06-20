@@ -119,11 +119,17 @@ class BillingController extends Controller
 
 
             $conta = Billing::find($request->id);
-            $conta->conta = $request->conta;
-            $conta->valor = $request->valor;
-            $conta->tipo = $request->tipo;
-            $conta->update();
-            return ('{"errMsg":"Alterado com Sucesso"}');
+
+            if ($conta) {
+                $conta->conta = $request->conta;
+                $conta->valor = $request->valor;
+                $conta->tipo = $request->tipo;
+                $conta->update();
+                return ('{"errMsg":"Alterado com Sucesso"}');
+            } else {
+                throw new Exception('{"errMsg":"Fatura não encontrada!"}');
+            }
+        
             //code...
         } catch (Exception $e) {
             return ($e->getMessage());
@@ -140,7 +146,7 @@ class BillingController extends Controller
                 $conta->delete();
                 return ('{"errMsg":"Excluído com Sucesso"}');
             } else {
-                throw new Exception('{"errMsg":"Erro ao a fatura"}');
+                throw new Exception('{"errMsg":"Erro ao excluir a fatura"}');
             }
         } catch (Exception $e) {
             return ($e->getMessage());
